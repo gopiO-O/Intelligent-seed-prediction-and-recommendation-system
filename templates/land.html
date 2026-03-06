@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Land-based Crop Prediction</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('static/land-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Left Container Styling with Blur Effect */
+        .left-container {
+            width: 40%;
+            max-height: 85vh;
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+            backdrop-filter: blur(10px); /* Blur effect */
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            overflow-y: auto;
+            transform: perspective(1000px) rotateX(-10deg) scale(1.05);
+            transition: all 0.5s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .left-container:hover {
+            transform: perspective(1000px) rotateX(0) scale(1.07);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Right Container Styling with Blur Effect */
+        .right-container {
+            width: 40%;
+            max-height: 85vh;
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+            backdrop-filter: blur(10px); /* Blur effect */
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            overflow-y: auto;
+            display: none; /* Initially hidden */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Black Box with White Text */
+        .black-box {
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+            color: white; /* White text */
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Heading Styling */
+        h2 {
+            font-size: 28px;
+            margin: 0;
+        }
+
+        /* Select and Input Styling */
+        select {
+            width: 100%;
+            padding: 15px;
+            margin: 12px 0;
+            border: 2px solid rgba(255, 255, 255, 0.5); /* Lighter border */
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+            background: rgba(255, 255, 255, 0.3); /* Semi-transparent background */
+            color: #333;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        select:focus {
+            border-color: rgba(0, 0, 0, 0.7); /* Darker border on focus */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        select::placeholder {
+            color: rgba(0, 0, 0, 0.6); /* Darker placeholder */
+        }
+
+        /* Button Styling */
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #4B0082, #8A2BE2); /* Dark Violet Gradient */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(75, 0, 130, 0.3); /* Dark Violet Shadow */
+        }
+
+        /* Result Section */
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        #result img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 15px;
+            animation: zoomIn 0.5s ease-in-out;
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Slide In Animation */
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Zoom In Animation */
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Scroll Down Button */
+        .scroll-down-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #4B0082, #8A2BE2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scroll-down-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(75, 0, 130, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="left-container">
+    <div class="black-box">
+        <h2>🌍 Land-based Crop Prediction</h2>
+    </div>
+
+    <select id="district">
+        <option value="">-- Select District --</option>
+        <option value="Kanchipuram, Chengalpet, Tiruvallur, Cuddalore, Villupuram, Kallakuruchi, Vellore, Tirupathur, Ranipet, Tiruvannamalai">Kanchipuram, Chengalpet, Tiruvallur, Cuddalore, Villupuram, Kallakuruchi, Vellore, Tirupathur, Ranipet, Tiruvannamalai</option>
+        <option value="Dharmapuri, Salem, Namakkal">Dharmapuri, Salem, Namakkal</option>
+        <option value="Erode, Coimbatore, Karur (part), Namakkal (part), Dindigul (part), Theni (part)">Erode, Coimbatore, Karur (part), Namakkal (part), Dindigul (part), Theni (part)</option>
+        <option value="Tiruchi, Perambalur, Pudukottai (part), Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Cuddalore (part)">Tiruchi, Perambalur, Pudukottai (part), Thanjavur, Nagapattinam, Mayiladuthurai, Tiruvarur, Cuddalore (part)</option>
+        <option value="Madurai, Sivagangai, Ramanathapuram, Virudhunagar, Tirunelveli, Tenkasi, Thoothukudi">Madurai, Sivagangai, Ramanathapuram, Virudhunagar, Tirunelveli, Tenkasi, Thoothukudi</option>
+        <option value="Kanniyakumari">Kanniyakumari</option>
+        <option value="Nilgiris, Kodaikanal">Nilgiris, Kodaikanal</option>
+    </select>
+
+    <select id="altitude">
+        <option value="">-- Select Altitude --</option>
+        <option value="100-200">100-200m</option>
+        <option value="200-600">200-600m</option>
+        <option value="100-600">100-600m</option>
+        <option value="100-2000">100-2000m</option>
+        <option value=">2000">>2000m</option>
+    </select>
+
+    <button onclick="predictLand()">🌱 Predict Crop</button>
+</div>
+
+<div class="right-container" id="right-container">
+    <div class="black-box">
+        <h2>Prediction Result</h2>
+    </div>
+    <div id="result"></div>
+</div>
+
+<!-- Scroll Down Button -->
+<button class="scroll-down-btn" onclick="scrollDown()">↓</button>
+
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "/get_districts",
+        type: "GET",
+        success: function(response) {
+            let districtSelect = $("#district");
+            response.districts.forEach(district => {
+                districtSelect.append(`<option value="${district}">${district}</option>`);
+            });
+        },
+        error: function() {
+            console.error("Error fetching districts");
+        }
+    });
+});
+
+function predictLand() {
+    let district = $("#district").val();
+    let altitude = $("#altitude").val();
+
+    if (!district || !altitude) {
+        $("#result").html("<p class='result-box'>⚠️ Please select both district and altitude.</p>");
+        return;
+    }
+
+    $("#result").html("<p class='result-box'>⏳ Predicting...</p>");
+
+    $.ajax({
+        url: "/predict/land",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ district: district, altitude: altitude }),
+        success: function(response) {
+            $("#result").html(` 
+                <div class="result-box">
+                    <h3>🌧️ Annual Rainfall: ${response.rainfall} mm</h3>
+                    <h3>🌱 Recommended Crops:</h3>
+                    <p>${response.crops}</p>
+                    <img id="cropChart" src="data:image/png;base64,${response.chart}" />
+                </div>
+            `);
+            document.getElementById("right-container").style.display = 'block';
+        },
+        error: function() {
+            $("#result").html("<p class='result-box'>❌ No data available for the selected District & Altitude.</p>");
+        }
+    });
+}
+
+function scrollDown() {
+    window.scrollBy({
+        top: window.innerHeight,
+        behavior: 'smooth'
+    });
+}
+</script>
+
+</body>
+</html>

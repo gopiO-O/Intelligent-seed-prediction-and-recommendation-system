@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seed Prediction</title>
+    <style>
+        /* Importing Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Lora:wght@500&display=swap');
+
+        /* General Styling */
+        body {
+            font-family: 'Lora', serif;
+            background: url('{{ url_for("static", filename="index-bg.gif") }}') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+            padding: 30px;
+            animation: fadeIn 1.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            justify-content: flex-start;
+            position: relative;
+        }
+
+        .logo img {
+            width: 140px;
+            height: auto;
+        }
+
+        /* Title Styling - Changed Font & Adjusted Size */
+        .title {
+            font-family: 'Merriweather', serif;
+            font-size: 25px;
+            font-weight: bold;
+            color: black;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* Description Styling - Changed Font & Adjusted Size */
+        .description {
+            font-family: 'Lora', serif;
+            font-size: 20px;
+            color: black;
+            max-width: 1500px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* Glassmorphism Effect */
+        .container {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            animation: slideUp 1s ease-in-out;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin-top: 100px;
+        }
+
+        /* Buttons */
+        .button {
+            display: block;
+            width: 85%;
+            margin: 30px auto;
+            padding: 20px;
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            cursor: pointer;
+            border: none;
+            font-size: 22px;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: linear-gradient(45deg, #ee0979, #ff6a00);
+            transform: scale(1.1);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="title">AGRICULTURAL SEED PREDICTION INTEGRATED WITH MACHINE LEARNING</div>
+    
+    <div class="description">
+        Our website helps in predicting the best seeds based on atmospheric and soil conditions. <br>
+        Optimize your farming with AI-powered insights with 99.5% accuracy! <br>
+        Get accurate recommendations using real-time data analysis. <br>
+        Use this for research purpose and Optimize your farming.
+    </div>
+
+    <div class="container">
+        <h1>🌱 Welcome to Seed Prediction Website</h1>
+        <button class="button" onclick="window.location.href='/atmosphere'">🌤️ Predict Using Atmosphere</button>
+        <button class="button" onclick="window.location.href='/land'">🌍 Predict Using Land</button>
+    </div>
+
+    <script>
+      window.watsonAssistantChatOptions = {
+        integrationID: "f531e27e-3a4d-4859-804d-9894874ec746", // The ID of this integration.
+        region: "au-syd", // The region your integration is hosted in.
+        serviceInstanceID: "210cbba5-79fe-4e78-b193-dfc37a15dda4", // The ID of your service instance.
+        onLoad: async (instance) => { await instance.render(); }
+      };
+      setTimeout(function(){
+        const t=document.createElement('script');
+        t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+        document.head.appendChild(t);
+      });
+    </script>
+</body>
+</html>
